@@ -10,8 +10,8 @@ class View {
     render() {
         const template = this.template.innerHTML;
         const parsedTemplate = template.replace(/{{{(([0-9+\-\*\/]|\s)*)}}}/g, (match, token) => {
-          const mathResult = new Function(`return${token}`);
-          return mathResult();
+            const mathResult = new Function(`return ${token.trim()}`);
+            return mathResult();
         });
         this.element.innerHTML = parsedTemplate;
     }
@@ -37,6 +37,7 @@ class CarouselView {
         this.timer;
         this.chevronLeft = this.element.querySelector('#slide-left');
         this.chevronRigth = this.element.querySelector('#slide-right');
+        this.interval();
         
         this.chevronLeft.addEventListener('click', this.slideLeft);
         this.chevronRigth.addEventListener('click', this.slideRight);
@@ -53,21 +54,25 @@ class CarouselView {
         this.currentSlide = this.currentSlide - 1;
         if(this.currentSlide < 0) {
             this.currentSlide = this.lastIndex;
-            this.slideBefore = 0;
+            const slideWidth = 100 * this.currentSlide;
+            this.slideList[this.currentSlide].style.transform = `translateX(-${slideWidth}%)`;
+        } else {
+            const slideWidth = 100 * this.currentSlide;
+            this.slideList[this.currentSlide].style.transform = `translateX(-${slideWidth}%)`;
+            this.slideList[this.slideBefore].style.transform = `translateX(-${slideWidth}%)`;
         }
-        const slideWidth = 100 * this.currentSlide;
-        this.slideList[this.currentSlide].style.transform = `translateX(${slideWidth}%)`;
-        this.slideList[this.slideBefore].style.transform = 'translateX(0)';
     }
 
     slideRight = () => {
-        this.slideBefore = this.currentSlide;
         this.currentSlide = this.currentSlide + 1;
         if(this.currentSlide > this.lastIndex) {
             this.currentSlide = 0;
-            this.slideBefore = this.lastIndex;
+            const [curr, ...rest] = this.slideList;
+            rest.forEach(el => el.style.transform = 'translateX(0)');
+        } else {
+            const slideWidth = 100 * this.currentSlide;
+            this.slideList[this.currentSlide].style.transform = `translateX(-${slideWidth}%)`;
         }
-        this.transform('-');
     }
 
     onMouseEnter = () => {
@@ -76,12 +81,6 @@ class CarouselView {
 
     onMouseLeave = () => {
         this.interval();
-    }
-
-    transform = (mod) => {
-        const slideWidth = 100 * this.currentSlide;
-        this.slideList[this.currentSlide].style.transform = `translateX(${mod}${slideWidth}%)`;
-        this.slideList[this.slideBefore].style.transform = 'translateX(0)';
     }
 }
 
