@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>vanilla js practice</title>
     <meta name="description" content="vanilla js practice">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="results"></div>
@@ -13,6 +14,16 @@
         <p>{{{ 7 - 3 }}}</p>
         <p>{{{ 7 * 3 }}}</p>
     </script>
+
+    <div id="carousel" class="carousel-wrapper">
+        <div class="carousel">
+            <div id="slide-left" class="chevron chevron-left">&#60;</div>
+            <img id="slide" class="slide" src="https://via.placeholder.com/300?text=First+Slide" />
+            <img id="slide" class="slide" src="https://via.placeholder.com/300?text=Second+Slide" />
+            <img id="slide" class="slide" src="https://via.placeholder.com/300?text=Third+Slide">
+            <div id="slide-right" class="chevron chevron-right">&#62;</div>    
+        </div>
+    </div>
     <script defer src="script.js"></script>
 </body>
 </html>
